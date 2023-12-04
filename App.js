@@ -66,14 +66,12 @@ export default function App() {
     loggedInUser, setLoggedInUser, logOut
    }
   
-
-  
-  
    return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MainScreen" component={MainScreen} />
+        {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
         {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
       </Stack.Navigator>
