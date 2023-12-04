@@ -1,77 +1,76 @@
-import React, { useState, useEffect} from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
-import { Button } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import SampleData from './SampleData';
 
+const FindStudyGroup = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState([]);
 
-const FindStudyGroup = ({ navigation }) => {
+  const handleSearch = () => {
+    const groups = SampleData[0].studyGroups;
+  
+    const filteredGroups = Object.values(groups).filter(group => {
+      return (
+        group.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        group.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  
+    setResults(filteredGroups);
+  };
+
   return (
-    <ImageBackground
-      source={require('../assets/screenBackground.jpg')}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.container}>
-        <Text style={styles.title}>What would you like to do?</Text>
-        <View style={styles.buttonContainer}>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('StartStudyGroup')}
-            style={styles.button}
-            labelStyle={styles.buttonText}
-          >
-            Start a study group
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('FindStudyGroup')}
-            style={styles.button}
-            labelStyle={styles.buttonText}
-          >
-            Find study groups
-          </Button>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('ViewCampusMap')}
-            style={styles.button}
-            labelStyle={styles.buttonText}
-          >
-            View campus map
-          </Button>
-        </View>
-      </View>
-    </ImageBackground>
+    <View style={styles.container}>
+      <Text style={styles.title}>Search for Study Groups</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter subject or location"
+        value={searchTerm}
+        onChangeText={(text) => setSearchTerm(text)}
+      />
+      <Button title="Search" onPress={handleSearch} />
+      <FlatList
+        data={results}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.resultItem}>
+            <Text>{`Subject: ${item.subject}`}</Text>
+            <Text>{`Location: ${item.location}`}</Text>
+            <Text>{`Description: ${item.description}`}</Text>
+            
+          </View>
+        )}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 16,
   },
   title: {
-    fontSize: 40,
-    marginBottom: 20,
-    textAlign: 'center',
-    color: 'white',
+    fontSize: 24,
+    marginBottom: 16,
   },
-  buttonContainer: {
-    marginTop: 20,
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 16,
+    paddingHorizontal: 8,
+    width: '100%',
   },
-  button: {
-    marginVertical: 10,
-    width: 250, 
-    height: 60, 
-    borderRadius: 15,
-    justifyContent: 'center',
+  resultItem: {
+    marginBottom: 16,
+    borderColor: 'gray',
+    borderWidth: 1,
+    padding: 8,
   },
-  buttonText:{
-    fontSize: 22,
-  }
 });
 
 export default FindStudyGroup;
