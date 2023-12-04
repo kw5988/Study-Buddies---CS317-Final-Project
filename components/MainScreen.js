@@ -3,40 +3,39 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground } f
 import { Button } from 'react-native-paper';
 
 
-const HomeScreen = ({ navigation }) => {
+const MainScreen = ({ navigation }) => {
   return (
     <ImageBackground
-      source={require('../assets/StudyBuddiesBackground.jpg')}
+      source={require('../assets/screenBackground.jpg')}
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Study Buddies</Text>
-      
+        <Text style={styles.title}>What would you like to do?</Text>
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('SignInOutScreen')}
+            onPress={() => navigation.navigate('StartStudyGroup')}
             style={styles.button}
+            labelStyle={styles.buttonText}
           >
-            Login
+            Start a study group
           </Button>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('FindStudyGroup')}
             style={styles.button}
+            labelStyle={styles.buttonText}
           >
-            Sign up
+            Find study groups
           </Button>
-          
-          {/* temporary button to navigate to next screen */}
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('MainScreen')}
+            onPress={() => navigation.navigate('ViewCampusMap')}
             style={styles.button}
+            labelStyle={styles.buttonText}
           >
-            Main screen (temp)
+            View campus map
           </Button>
-
         </View>
       </View>
     </ImageBackground>
@@ -57,6 +56,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     marginBottom: 20,
+    textAlign: 'center',
     color: 'white',
   },
   buttonContainer: {
@@ -64,8 +64,14 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 10,
-    width: 200, 
+    width: 250, 
+    height: 60, 
+    borderRadius: 15,
+    justifyContent: 'center',
   },
+  buttonText:{
+    fontSize: 22,
+  }
 });
 
-export default HomeScreen;
+export default MainScreen;

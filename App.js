@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect} from 'react';
 
 import HomeScreen from './components/Homepage';
+import MainScreen from './components/MainScreen'
 
 // import { 
 //   getAuth, // access to authentication features:
@@ -72,6 +73,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="MainScreen" component={MainScreen} />
         {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} /> */}
       </Stack.Navigator>
