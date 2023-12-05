@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, StyleSheet, ImageBackground} from 'react-native';
 import SampleData from './SampleData';
 
 const FindStudyGroup = () => {
@@ -21,6 +21,10 @@ const FindStudyGroup = () => {
   };
 
   return (
+    <ImageBackground
+    source={require('../assets/screenBackground.jpg')}
+    style={styles.backgroundImage}
+  >
     <View style={styles.container}>
       <Text style={styles.title}>Search for Study Groups</Text>
       <TextInput
@@ -43,6 +47,8 @@ const FindStudyGroup = () => {
         )}
       />
     </View>
+    </ImageBackground>
+
   );
 };
 
