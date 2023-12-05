@@ -21,10 +21,7 @@ const FindStudyGroup = () => {
   };
 
   return (
-    <ImageBackground
-    source={require('../assets/screenBackground.jpg')}
-    style={styles.backgroundImage}
-  >
+    
     <View style={styles.container}>
       <Text style={styles.title}>Search for Study Groups</Text>
       <TextInput
@@ -34,7 +31,7 @@ const FindStudyGroup = () => {
         onChangeText={(text) => setSearchTerm(text)}
       />
       <Button title="Search" onPress={handleSearch} />
-      <FlatList
+      <FlatList style={styles.searchResults}
         data={results}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -47,7 +44,6 @@ const FindStudyGroup = () => {
         )}
       />
     </View>
-    </ImageBackground>
 
   );
 };
@@ -76,6 +72,15 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     padding: 8,
+  },
+  searchResults:{
+    flexDirection: 'column',
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    backgroundColor: '#ffffff',
+    borderWidth: 2,
+    borderColor: 'blue',
   },
 });
 
