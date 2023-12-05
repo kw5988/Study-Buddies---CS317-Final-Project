@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
             onPress={() => navigation.navigate('SignUp')}
             style={styles.button}
           >
-            Sign up
+            Sign Up
           </Button>
           
           {/* temporary button to navigate to next screen */}
