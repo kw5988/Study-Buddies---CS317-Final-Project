@@ -6,10 +6,10 @@ import { // for email/password authentication:
          signOut
   } from "firebase/auth";
 import { Button } from 'react-native-paper';
-import { emailOf } from '../utils';
-import styles from '../styles';
+// import { emailOf } from '../utils';
+// import styles from '../styles';
 
-export default function SignInOutPScreen( {auth, loginProps, setPscreen} ) {
+export default function SignInOutScreen( {auth, loginProps, navigation} ) {
 
   const [errorMsg, setErrorMsg] = useState('');
 

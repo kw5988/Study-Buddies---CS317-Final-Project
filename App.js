@@ -9,6 +9,7 @@ import HomeScreen from './components/Homepage';
 import MainScreen from './components/MainScreen';
 import FindStudyGroup from './components/FindStudyGroup';
 import SignInOutScreen from './components/SignInOutScreen';
+import StudyGroupDetails from './components/StudyGroupDetails';
 
 import { 
   getAuth, // access to authentication features:
@@ -17,7 +18,6 @@ import {
 import { // access to Firestore features:
   getFirestore, 
 } from "firebase/firestore";
-import SignInOutPScreen from './components/SignInOutScreen';
 
 //For our StudyBuddies Firebase Team Account registration info
 const firebaseConfig = {
@@ -74,7 +74,9 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} />
-        {/* <Stack.Screen name="Sign in and out" component={SignInOutScreen} /> */}
+        <Stack.Screen name="Sign in and out" component={SignInOutScreen} />
+        <Stack.Screen name="StudyGroupDetails" component={StudyGroupDetails} />
+
         {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
         {/* <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} /> */}

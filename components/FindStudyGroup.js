@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, ImageBackground} from 'react-native';
+import { View, Text, TextInput, Button, FlatList, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
 import SampleData from './SampleData';
 
-const FindStudyGroup = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState([]);
+const FindStudyGroup = ({navigation}) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [results, setResults] = useState([]);
 
-  const handleSearch = () => {
-    const groups = SampleData[0].studyGroups;
-  
-    const filteredGroups = Object.values(groups).filter(group => {
-      return (
-        group.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        group.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-  
-    setResults(filteredGroups);
-  };
+    const handleSearch = () => {
+        const groups = SampleData[0].studyGroups;
+    
+        const filteredGroups = Object.values(groups).filter(group => {
+        return (
+            group.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            group.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            group.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        });
+    
+        setResults(filteredGroups);
+    };
 
   return (
     
@@ -35,12 +35,14 @@ const FindStudyGroup = () => {
         data={results}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.resultItem}>
+            <TouchableOpacity
+            style={styles.resultItem}
+            onPress={() => navigation.navigate('StudyGroupDetails', { studyGroup: item })}
+          >
             <Text>{`Subject: ${item.subject}`}</Text>
             <Text>{`Location: ${item.location}`}</Text>
             <Text>{`Description: ${item.description}`}</Text>
-            
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
