@@ -10,6 +10,7 @@ import MainScreen from './components/MainScreen';
 import FindStudyGroup from './components/FindStudyGroup';
 import SignInOutScreen from './components/SignInOutScreen';
 import StudyGroupDetails from './components/StudyGroupDetails';
+import ViewCampusMap from './components/ViewCampusMap';
 
 import { 
   getAuth, // access to authentication features:
@@ -76,6 +77,7 @@ export default function App() {
         <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} />
         <Stack.Screen name="Sign in and out" component={SignInOutScreen} />
         <Stack.Screen name="StudyGroupDetails" component={StudyGroupDetails} />
+        <Stack.Screen name="ViewCampusMap" component={ViewCampusMap} />
 
         {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
         {/* <Stack.Screen name="Login" component={LoginScreen} />
