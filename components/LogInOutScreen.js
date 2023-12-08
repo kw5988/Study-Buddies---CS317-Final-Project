@@ -11,16 +11,15 @@ import { emailOf } from '../utils';
 //import styles from '../styles';
 
 
-export default function SignUpScreen () {
+export default function LoginScreen ({navigation}) {
 
   
   const allProps = useContext(StateContext);
   const loginInfo = allProps.loginProps;
   const firebaseInfo = allProps.firebaseProps;
 
-  console.log(allProps);
+  
   const [errorMsg, setErrorMsg] = useState('');
-  loginInfo.setMessage('');
   
     useEffect(() => {
       // Executed when entering component
@@ -161,8 +160,8 @@ export default function SignUpScreen () {
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
-        <View style={loginInfo.loggedInUser === null ? styles.signInOutPane : styles.hidden}>
-          <Text style={styles.title}> Sign Up </Text>
+        <View style={loginInfo.loggedInUser !== null ? styles.hidden: styles.signInOutPane}>
+          <Text style={styles.title}> Log In </Text>
           <View style={styles.labeledInput}>
               <Text style={styles.inputLabel}>Email:</Text>
               <TextInput 
@@ -194,19 +193,34 @@ export default function SignUpScreen () {
                 mode="contained" 
                 style={styles.button}
                 labelStyle={styles.buttonText}
-                onPress={() => signUpUserEmailPassword()}>
-                  Sign Up
+                onPress={() => signInUserEmailPassword()}>
+                  Log In
               </Button>
             </View>
-            <View style={errorMsg === '' ? styles.hidden : styles.errorBox}>
+        </View>
+        <View style={styles.buttonHolder}>
+              <Button
+                mode="contained" 
+                style={styles.button}
+                labelStyle={styles.buttonText}
+                onPress={() => loginInfo.logOut()}>
+                  Log Out
+              </Button>
+            </View>
+        <View style={styles.buttonHolder}>
+              <Button
+                mode="contained" 
+                style={loginInfo.loggedInUser === null ? styles.hidden : styles.button}
+                labelStyle={styles.buttonText}
+                onPress={() => navigation.navigate('MainScreen')}>
+                  Main Screen
+              </Button>
+            </View>
+       <View style={errorMsg === '' ? styles.hidden : styles.errorBox}>
               <Text style={styles.errorMessage}>{errorMsg}</Text>
             </View>
-        </View>
-        <View style={loginInfo.loggedInUser === null ? styles.hidden : styles.signInOutPane }>
-
-       </View>
-       <View style={errorMsg === '' ? styles.hidden : styles.errorBox}>
-              <Text style={styles.errorMessage}>{loginInfo.message}</Text>
+       <View style={styles.text}>
+              <Text style={styles.text}>{loginInfo.message}</Text>
             </View>
       </View>
       </ImageBackground>
@@ -216,65 +230,59 @@ export default function SignUpScreen () {
   
 
 const styles = StyleSheet.create({
-    backgroundImage: {
-      flex: 1,
-      resizeMode: 'cover',
-      justifyContent: 'center',
-    },
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontSize: 40,
-      marginBottom: 20,
-      textAlign: 'center',
-      color: 'white',
-    },
-    buttonContainer: {
-      marginTop: 20,
-    },
-    button: {
-      marginVertical: 10,
-      width: 250, 
-      height: 60, 
-      borderRadius: 15,
-      justifyContent: 'center',
-    },
-    buttonText:{
-      fontSize: 18,
-    },
-    textInput: {
-      width: "80%",
-      fontSize: 20,
-      borderRadius: 5,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      borderColor: "black",
-      borderWidth: 2
-      ,
-      marginBottom: 8,
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
-  errorBox: {
-    backgrounColor: 'white',
-    width: '80%',
-    borderWidth: 1,
-    borderStyle: 'dashed', 
-    borderColor: 'red',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  errorMessage: {
-    color: 'black',
-    padding: 10, 
+  title: {
+    fontSize: 40,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'white',
   },
-  hidden: {
-    display: 'none',
+  buttonContainer: {
+    marginTop: 20,
   },
-  });
-  
-  
- 
-  
-  
-
+  button: {
+    marginVertical: 10,
+    width: 250, 
+    height: 60, 
+    borderRadius: 15,
+    justifyContent: 'center',
+  },
+  buttonText:{
+    fontSize: 18,
+  },
+  textInput: {
+    width: "80%",
+    fontSize: 20,
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderColor: "black",
+    borderWidth: 2
+    ,
+    marginBottom: 8,
+},
+errorBox: {
+  backgrounColor: 'white',
+  width: '80%',
+  borderWidth: 1,
+  borderStyle: 'dashed', // Lyn sez: doesn't seem to work 
+  borderColor: 'red',
+},
+errorMessage: {
+  color: 'black',
+  padding: 10, 
+},
+hidden: {
+  display: 'none',
+},
+});
 
