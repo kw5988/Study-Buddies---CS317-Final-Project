@@ -89,7 +89,7 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
             mode="date"
             display="default"
             onChange={handleDateChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
+            // style = {{ backgroundColor: 'black', color:'white'}}
           />
         )}
       </View>
@@ -108,7 +108,7 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
             mode="time"
             display="spinner"
             onChange={handleStartTimeChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
+            // style = {{ backgroundColor: 'black', color:'white'}}
           />
         )}
       </View>
@@ -127,7 +127,7 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
             mode="time"
             display="spinner"
             onChange={handleEndTimeChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
+            // style = {{ backgroundColor: 'blue', color:'white'}}
           />
         )}
       </View>
