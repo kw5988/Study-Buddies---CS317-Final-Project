@@ -9,9 +9,11 @@ import FindStudyGroup from './components/FindStudyGroup';
 import LoginScreen from './components/LogInOutScreen';
 import StateContext from './components/StateContext.js';
 import SignUpScreen from './components/SignUp.js';
+import FindStudyGroupFromMap from "./components/FindStudyGroupFromMap.js";
 
 import StudyGroupDetails from './components/StudyGroupDetails';
 import ViewCampusMap from './components/ViewCampusMap';
+import CreateStudyGroup from "./components/CreateStudyGroup.js";
 
 import { emailOf } from './utils';
 import { firebaseConfig } from './firebaseConfig.js'
@@ -30,6 +32,7 @@ import { // access to Firestore features:
 import { // access to Firebase storage features (for files like images, video, etc.)
          getStorage, 
 } from "firebase/storage";
+import FindStudyGroupFromMarker from "./components/FindStudyGroupFromMap.js";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -99,6 +102,8 @@ export default function App() {
 
         <Stack.Screen name="StudyGroupDetails" component={StudyGroupDetails} />
         <Stack.Screen name="ViewCampusMap" component={ViewCampusMap} />
+        <Stack.Screen name="FindStudyGroupFromMap" component={FindStudyGroupFromMap} />
+        <Stack.Screen name="CreateStudyGroup" component={CreateStudyGroup} />
 
         {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
         {/* <Stack.Screen name="Login" component={LoginScreen} />

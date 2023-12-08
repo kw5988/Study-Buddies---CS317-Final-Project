@@ -14,7 +14,7 @@ const MainScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('StartStudyGroup')}
+            onPress={() => navigation.navigate('CreateStudyGroup')}
             style={styles.button}
             labelStyle={styles.buttonText}
           >

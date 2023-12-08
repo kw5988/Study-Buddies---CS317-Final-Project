@@ -9,7 +9,7 @@ const ViewCampusMap = () => {
 
   const handleMarkerPress = (location) => {
     // Navigate to the search page with the selected location
-    navigation.navigate('FindStudyGroup', { selectedLocation: location });
+    navigation.navigate('FindStudyGroupFromMap', { selectedLocation: location });
   };
 
   return (
