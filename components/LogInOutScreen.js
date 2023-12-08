@@ -11,14 +11,14 @@ import { emailOf } from '../utils';
 //import styles from '../styles';
 
 
-export default function LoginScreen () {
+export default function LoginScreen ({navigation}) {
 
   
   const allProps = useContext(StateContext);
   const loginInfo = allProps.loginProps;
   const firebaseInfo = allProps.firebaseProps;
 
-  console.log(allProps);
+  
   const [errorMsg, setErrorMsg] = useState('');
   
     useEffect(() => {
@@ -160,7 +160,7 @@ export default function LoginScreen () {
       style={styles.backgroundImage}
     >
       <View style={styles.container}>
-        <View style={loginInfo.loggedInUser === null ? styles.signInOutPane : styles.hidden}>
+        <View style={loginInfo.loggedInUser !== null ? styles.hidden: styles.signInOutPane}>
           <Text style={styles.title}> Log In </Text>
           <View style={styles.labeledInput}>
               <Text style={styles.inputLabel}>Email:</Text>
@@ -196,13 +196,9 @@ export default function LoginScreen () {
                 onPress={() => signInUserEmailPassword()}>
                   Log In
               </Button>
-
-            </View>
-            <View style={errorMsg === '' ? styles.hidden : styles.errorBox}>
-              <Text style={styles.errorMessage}>{errorMsg}</Text>
             </View>
         </View>
-        <View style={loginInfo.loggedInUser === null ? styles.hidden : styles.button}> 
+        <View style={styles.buttonHolder}>
               <Button
                 mode="contained" 
                 style={styles.button}
@@ -210,9 +206,21 @@ export default function LoginScreen () {
                 onPress={() => loginInfo.logOut()}>
                   Log Out
               </Button>
-       </View>
+            </View>
+        <View style={styles.buttonHolder}>
+              <Button
+                mode="contained" 
+                style={loginInfo.loggedInUser === null ? styles.hidden : styles.button}
+                labelStyle={styles.buttonText}
+                onPress={() => navigation.navigate('MainScreen')}>
+                  Main Screen
+              </Button>
+            </View>
        <View style={errorMsg === '' ? styles.hidden : styles.errorBox}>
-              <Text style={styles.errorMessage}>{loginInfo.message}</Text>
+              <Text style={styles.errorMessage}>{errorMsg}</Text>
+            </View>
+       <View style={styles.text}>
+              <Text style={styles.text}>{loginInfo.message}</Text>
             </View>
       </View>
       </ImageBackground>
@@ -261,6 +269,20 @@ const styles = StyleSheet.create({
     borderWidth: 2
     ,
     marginBottom: 8,
-}
+},
+errorBox: {
+  backgrounColor: 'white',
+  width: '80%',
+  borderWidth: 1,
+  borderStyle: 'dashed', // Lyn sez: doesn't seem to work 
+  borderColor: 'red',
+},
+errorMessage: {
+  color: 'black',
+  padding: 10, 
+},
+hidden: {
+  display: 'none',
+},
 });
 

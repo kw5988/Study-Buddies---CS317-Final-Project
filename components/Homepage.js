@@ -15,26 +15,17 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('SignInOutScreen')}
+            onPress={() => navigation.navigate('LoginScreen')}
             style={styles.button}
           >
             Login
           </Button>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('SignUpScreen')}
             style={styles.button}
           >
             Sign Up
-          </Button>
-          
-          {/* temporary button to navigate to next screen */}
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('MainScreen')}
-            style={styles.button}
-          >
-            Main screen (temp)
           </Button>
 
         </View>
