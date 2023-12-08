@@ -77,7 +77,7 @@ export default function App() {
     setMessage('Logged Out.')
     console.log('logOut: signOut(auth)');
     signOut(auth); // Will eventually set auth.currentUser to null
-        
+    if(emailOf(auth.currentUser) === null){setMessage('Logged Out.')};
   }
   
     const loginProps = { 
