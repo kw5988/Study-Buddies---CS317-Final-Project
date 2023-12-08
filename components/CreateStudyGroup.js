@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-// import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
+import { SelectList } from 'react-native-dropdown-select-list'
+// import firestore from 'react-native-firebase/firestore';
+
+
+
 import locations from './locations';
 
 const CreateStudyGroup = ({ onCreateGroup }) => {
@@ -16,20 +22,50 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
   const [groupSize, setGroupSize] = useState('');
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedBuilding, setSelected] = React.useState("");
 
-  const handleCreateGroup = () => {
-    onCreateGroup({
-      building,
+//   locations.map((location) => (console.log(location.location)));
+  
+  locationsObject = []
+  locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
+//   console.log(locationsObject)
+
+//   const handleCreateGroup = () => {
+//     onCreateGroup({
+//       selectedBuilding,
+//       location,
+//       date,
+//       startDateTime,
+//       endDateTime,
+//       groupSize,
+//       subject, 
+//       description
+//     });
+//   };
+
+
+const handleCreateGroup = async () => {
+    // Create an object with the group details
+    const groupData = {
+      building: selectedBuilding,
       location,
       date,
       startDateTime,
       endDateTime,
       groupSize,
-      subject, 
-      description
-    });
-  };
+      subject,
+      description,
+    };
 
+    try {
+      // Add the group data to Firestore
+      await firestore().collection('studyGroups').add(groupData);
+      onCreateGroup(groupData);
+    } catch (error) {
+      console.error('Error creating group:', error);
+    }
+  };  
+  
   const handleDateChange = (event, selected) => {
     setShowDatePicker(false);
     if (selected) {
@@ -54,7 +90,7 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
   return (
     
     <View style={styles.container}>
-      <View style={styles.inputGroup}>
+      {/* <View style={styles.inputGroup}>
         <Text style={styles.label}>Building:</Text>
         <TextInput
           placeholder="Enter Building"
@@ -62,8 +98,16 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
           onChangeText={(text) => setBuilding(text)}
           style={styles.input}
         />
+      </View> */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Building:</Text>
+        <SelectList 
+        setSelected={(val) => setSelected(val)} 
+        data={locationsObject} 
+        save="value"
+        />
       </View>
-  
+   
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Room/Location:</Text>
