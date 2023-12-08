@@ -10,7 +10,6 @@ import { // for email/password authentication:
 import { emailOf } from '../utils';
 //import styles from '../styles';
 
-
 export default function LoginScreen () {
 
   

@@ -10,6 +10,9 @@ import LoginScreen from './components/LogInOutScreen';
 import StateContext from './components/StateContext.js';
 import SignUpScreen from './components/SignUp.js';
 
+import StudyGroupDetails from './components/StudyGroupDetails';
+import ViewCampusMap from './components/ViewCampusMap';
+
 import { emailOf } from './utils';
 import { firebaseConfig } from './firebaseConfig.js'
 import { initializeApp } from 'firebase/app';
@@ -21,6 +24,7 @@ import { // access to authentication features:
 import { // access to Firestore features:
          getFirestore, 
 } from "firebase/firestore";
+
 
 // New for images:
 import { // access to Firebase storage features (for files like images, video, etc.)
@@ -89,8 +93,13 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} />
+
         <Stack.Screen name="LoginScreen" component={LoginScreen} /> 
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+
+        <Stack.Screen name="StudyGroupDetails" component={StudyGroupDetails} />
+        <Stack.Screen name="ViewCampusMap" component={ViewCampusMap} />
+
         {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
         {/* <Stack.Screen name="Login" component={LoginScreen} />
          */}
