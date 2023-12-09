@@ -9,7 +9,10 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@firebase/firestore": "^4.4.0",
     "@react-native-community/datetimepicker": "^7.6.2",
+    "@react-native-firebase/app": "^18.7.2",
+    "@react-native-firebase/firestore": "^18.7.2",
     "@react-navigation/stack": "^6.3.20",
     "expo": "~49.0.15",
     "expo-status-bar": "~1.6.0",
