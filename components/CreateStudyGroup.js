@@ -5,8 +5,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Dropdown } from 'react-native-element-dropdown';
 import { SelectList } from 'react-native-dropdown-select-list'
 // import firestore from 'react-native-firebase/firestore';
+import { // for Firestore access
+    collection, doc, addDoc, setDoc,
+    query, where, getDocs
+} from "firebase/firestore";
 
-
+import { firestore } from '../firebaseConfig'
 
 import locations from './locations';
 
@@ -58,14 +62,16 @@ const handleCreateGroup = async () => {
     };
 
     try {
-      // Add the group data to Firestore
-      await firestore().collection('studyGroups').add(groupData);
-      onCreateGroup(groupData);
-    } catch (error) {
-      console.error('Error creating group:', error);
-    }
-  };  
-  
+        const collectionRef = collection(firestore, 'studyGroups');
+        // Add the group data to Firestore
+        const docRef = await addDoc(collectionRef, groupData);
+        onCreateGroup({ ...groupData, id: docRef.id });
+      } catch (error) {
+        console.error('Error creating group:', error);
+      }
+    };
+
+
   const handleDateChange = (event, selected) => {
     setShowDatePicker(false);
     if (selected) {
