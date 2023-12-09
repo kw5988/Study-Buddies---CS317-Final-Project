@@ -32,7 +32,6 @@ import { // access to Firestore features:
 import { // access to Firebase storage features (for files like images, video, etc.)
          getStorage, 
 } from "firebase/storage";
-import FindStudyGroupFromMarker from "./components/FindStudyGroupFromMap.js";
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -105,9 +104,8 @@ export default function App() {
         <Stack.Screen name="FindStudyGroupFromMap" component={FindStudyGroupFromMap} />
         <Stack.Screen name="CreateStudyGroup" component={CreateStudyGroup} />
 
-        {/* <Stack.Screen name="FindStudyGroup" component={FindStudyGroup} /> */}
-        {/* <Stack.Screen name="Login" component={LoginScreen} />
-         */}
+
+       
       </Stack.Navigator>
     </NavigationContainer>
     </StateContext.Provider>

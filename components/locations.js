@@ -89,6 +89,21 @@ export default [
             "latitude": 42.292318048815474, 
             "longitude": -71.30818493477199
         }
+    },
+    {
+        "location": "Munger Hall",
+        coord: {
+            "latitude": 42.29614905299179, 
+            "longitude": -71.30614921083276
+        }
+
+    },
+    {
+        "location": "Beebe Hall",
+        coord: {
+            "latitude": 42.29529294369897, 
+            "longitude": -71.30824889627822
+        }
     }
 
   ];
