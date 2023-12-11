@@ -5,10 +5,10 @@ import { Button } from 'react-native-paper';
 
 const MainScreen = ({ navigation }) => {
   return (
-    <ImageBackground
-      source={require('../assets/screenBackground.jpg')}
-      style={styles.backgroundImage}
-    >
+    // <ImageBackground
+    //   source={require('../assets/screenBackground.jpg')}
+    //   style={styles.backgroundImage}
+    // >
       <View style={styles.container}>
         <Text style={styles.title}>What would you like to do?</Text>
         <View style={styles.buttonContainer}>
@@ -38,7 +38,7 @@ const MainScreen = ({ navigation }) => {
           </Button>
         </View>
       </View>
-    </ImageBackground>
+    // </ImageBackground>
   );
 };
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginBottom: 20,
     textAlign: 'center',
-    color: 'white',
+    color: 'black',
   },
   buttonContainer: {
     marginTop: 20,

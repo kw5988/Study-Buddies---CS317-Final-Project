@@ -9,8 +9,16 @@ import { // for Firestore access
     collection, doc, addDoc, setDoc,
     query, where, getDocs
 } from "firebase/firestore";
+import { useContext } from "react";
+import StateContext from './StateContext.js';
+import { emailOf } from '../utils';
+// import { // access to Firestore features:
+//     getFirestore, 
+// } from "firebase/firestore";
+// import { initializeApp } from 'firebase/app';
 
-import { firestore } from '../firebaseConfig'
+
+// import { firestore } from '../firebaseConfig'
 
 import locations from './locations';
 
@@ -27,45 +35,40 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [selectedBuilding, setSelected] = React.useState("");
+  const allProps = useContext(StateContext);
+  const loginInfo = allProps.loginProps;
+  const firebaseInfo = allProps.firebaseProps;
+  const [users, setUsers] = useState(emailOf(firebaseInfo.auth.currentUser)); // Set initial user to the email
 
-//   locations.map((location) => (console.log(location.location)));
-  
+
+console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
+
   locationsObject = []
   locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
-//   console.log(locationsObject)
 
-//   const handleCreateGroup = () => {
-//     onCreateGroup({
-//       selectedBuilding,
-//       location,
-//       date,
-//       startDateTime,
-//       endDateTime,
-//       groupSize,
-//       subject, 
-//       description
-//     });
-//   };
-
-
+//   setUsers(emailOf(firebaseInfo.auth.currentUser))
 const handleCreateGroup = async () => {
     // Create an object with the group details
+    
     const groupData = {
       building: selectedBuilding,
       location,
       date,
       startDateTime,
       endDateTime,
+      users, 
       groupSize,
       subject,
       description,
     };
+    console.log(groupData)
 
     try {
-        const collectionRef = collection(firestore, 'studyGroups');
-        // Add the group data to Firestore
-        const docRef = await addDoc(collectionRef, groupData);
-        onCreateGroup({ ...groupData, id: docRef.id });
+       
+        const collectionRef = collection(firebaseInfo.db, '/studyGroups');
+        const docRef = await addDoc(collectionRef, groupData);  
+        // Pass the created group data along with the ID to the callback function
+        // onCreateGroup({ ...groupData, id: docRef.id });
       } catch (error) {
         console.error('Error creating group:', error);
       }
