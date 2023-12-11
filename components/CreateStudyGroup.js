@@ -22,7 +22,7 @@ import { emailOf } from '../utils';
 
 import locations from './locations';
 
-const CreateStudyGroup = ({ onCreateGroup }) => {
+const CreateStudyGroup = ({ onCreateGroup, navigation }) => {
   const [building, setBuilding] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState(new Date());
@@ -38,10 +38,10 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
   const allProps = useContext(StateContext);
   const loginInfo = allProps.loginProps;
   const firebaseInfo = allProps.firebaseProps;
-  const [users, setUsers] = useState(emailOf(firebaseInfo.auth.currentUser)); // Set initial user to the email
+  const [users, setUsers] = useState([emailOf(firebaseInfo.auth.currentUser)]);  // Set initial user to the email
 
 
-console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
+// console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
 
   locationsObject = []
   locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
@@ -69,6 +69,7 @@ const handleCreateGroup = async () => {
         const docRef = await addDoc(collectionRef, groupData);  
         // Pass the created group data along with the ID to the callback function
         // onCreateGroup({ ...groupData, id: docRef.id });
+        navigation.navigate('MainScreen');
       } catch (error) {
         console.error('Error creating group:', error);
       }

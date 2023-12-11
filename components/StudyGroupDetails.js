@@ -3,6 +3,8 @@ import MapView, { Marker } from 'react-native-maps';
 import { View, Text, StyleSheet } from 'react-native';
 import sampleData from './SampleData';
 import locations from './locations';
+const loginInfo = allProps.loginProps;
+const firebaseInfo = allProps.firebaseProps;
 
 const StudyGroupDetails = ({ route }) => {
   const studyGroupInformation = route.params;
@@ -12,7 +14,7 @@ const StudyGroupDetails = ({ route }) => {
   const studyGroup = studyGroupInformation['studyGroup']
   const studyGroupLocation = studyGroup['location']
 
-  const locationData = locations.find(loc => loc.location === studyGroupLocation);
+  const locationData = locations.find(loc => loc.location === studyGroup.building);
 
   return (
     <View style={styles.container}>
@@ -26,10 +28,15 @@ const StudyGroupDetails = ({ route }) => {
     <Text style={styles.details}>{studyGroup.description}</Text>
 
     <Text style={styles.title}>{`Max # people: `}</Text>
-    <Text style={styles.details}>{studyGroup.maxPeople}</Text>
+    <Text style={styles.details}>{studyGroup.groupSize}</Text>
 
     <Text style={styles.title}>{`Current # people: `}</Text>
-    <Text style={styles.details}>{studyGroup.currentPeople}</Text>
+    <Text style={styles.details}>{studyGroup.groupSize-studyGroup.users.length}</Text>
+
+    <Text style={styles.title}>{`Participants: `}</Text>
+    <Text style={styles.details}>{studyGroup.users}</Text>
+
+
 
 
       {/* Map Section */}

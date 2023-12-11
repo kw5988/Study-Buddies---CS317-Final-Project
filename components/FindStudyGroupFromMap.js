@@ -1,17 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import SampleData from './SampleData';
+import { useContext } from "react";
+import StateContext from './StateContext.js';
+import { collection, doc, addDoc, setDoc, query, where, getDocs, firestore} from "firebase/firestore";
+
 
 const FindStudyGroupFromMap = ({ route, navigation }) => {
+  const allProps = useContext(StateContext);
+
+  const firebaseInfo = allProps.firebaseProps;
+  
   const { selectedLocation } = route.params;
   const [studyGroups, setStudyGroups] = useState([]);
-
+  
   useEffect(() => {
-    // Filter study groups based on the selected location from the map marker
-    const groups = SampleData[0].studyGroups;
-    const filteredGroups = Object.values(groups).filter(group => group.location === selectedLocation);
-    setStudyGroups(filteredGroups);
+    const fetchStudyGroups = async () => {
+      const studyGroupsCollection = collection(firebaseInfo.db, 'studyGroups');
+      const q = query(studyGroupsCollection, where('building', '==', selectedLocation));
+
+      try {
+        const querySnapshot = await getDocs(q);
+        const groups = [];
+
+        querySnapshot.forEach((doc) => {
+          groups.push(doc.data());
+        });
+
+        setStudyGroups(groups);
+      } catch (error) {
+        console.error('Error fetching study groups:', error);
+      }
+    };
+
+    fetchStudyGroups();
   }, [selectedLocation]);
+
+
+  // useEffect(() => {
+  //   // Filter study groups based on the selected location from the map marker
+  //   const groups = SampleData[0].studyGroups;
+  //   const filteredGroups = Object.values(groups).filter(group => group.location === selectedLocation);
+  //   setStudyGroups(filteredGroups);
+  // }, [selectedLocation]);
 
   return (
     <View style={styles.container}>
