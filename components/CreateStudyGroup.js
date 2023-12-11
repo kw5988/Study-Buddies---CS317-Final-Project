@@ -11,6 +11,7 @@ import { // for Firestore access
 } from "firebase/firestore";
 import { useContext } from "react";
 import StateContext from './StateContext.js';
+import { emailOf } from '../utils';
 // import { // access to Firestore features:
 //     getFirestore, 
 // } from "firebase/firestore";
@@ -35,24 +36,27 @@ const CreateStudyGroup = ({ onCreateGroup }) => {
   const [description, setDescription] = useState('');
   const [selectedBuilding, setSelected] = React.useState("");
   const allProps = useContext(StateContext);
-    const loginInfo = allProps.loginProps;
-    const firebaseInfo = allProps.firebaseProps;
+  const loginInfo = allProps.loginProps;
+  const firebaseInfo = allProps.firebaseProps;
+  const [users, setUsers] = useState(emailOf(firebaseInfo.auth.currentUser)); // Set initial user to the email
 
-//   locations.map((location) => (console.log(location.location)));
-  
+
+console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
+
   locationsObject = []
   locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
 
-
+//   setUsers(emailOf(firebaseInfo.auth.currentUser))
 const handleCreateGroup = async () => {
     // Create an object with the group details
-  
+    
     const groupData = {
       building: selectedBuilding,
       location,
       date,
       startDateTime,
       endDateTime,
+      users, 
       groupSize,
       subject,
       description,
