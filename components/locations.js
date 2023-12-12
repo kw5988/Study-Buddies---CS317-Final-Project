@@ -9,8 +9,8 @@ export default [
     {
         "location": "Founders Hall",
         coord: {
-            "latitude": 42.292696661231936,
-            "longitude": -71.30842508816124,
+            "latitude": 42.29277803757274, 
+            "longitude": -71.30573235419293
         }
     },
     {
@@ -23,8 +23,8 @@ export default [
     {
         "location": "Clapp Library",
         coord: {
-            "latitude": 42.29214955008597,
-            "longitude": -71.3062984206137
+            "latitude": 42.29160938143585, 
+            "longitude": -71.30644470481619
         }
     },
     {
@@ -58,15 +58,15 @@ export default [
     {
         "location": "Pom",
         coord: {
-            "latitude": 42.29598388212375, 
-            "longitude": -71.30734852029346
+            "latitude": 42.295797391418304, 
+            "longitude": -71.30737246113728
         }
     },
     {
         "location": "Cazenove Hall",
         coord: {
-            "latitude": 42.295996735047005, 
-            "longitude": -71.30816173449634
+            "latitude": 42.29577141436565,
+            "longitude":  -71.30814508536551
             }
     },
     {
@@ -79,8 +79,8 @@ export default [
     {
         "location": "Tower",
         coord: {
-            "latitude": 42.29290209008798, 
-            "longitude": -71.30867840099803
+            "latitude": 42.29286463182517, 
+            "longitude": -71.30871164007564
         }
     },
     {
@@ -93,8 +93,8 @@ export default [
     {
         "location": "Munger Hall",
         coord: {
-            "latitude": 42.29614905299179, 
-            "longitude": -71.30614921083276
+            "latitude": 42.29588398151642, 
+            "longitude": -71.30610231373178
         }
 
     },
@@ -103,6 +103,55 @@ export default [
         coord: {
             "latitude": 42.29529294369897, 
             "longitude": -71.30824889627822
+        }
+    },
+    {
+        "location": "Pendleton East",
+        coord: {
+            "latitude": 42.293947049917705, 
+            "longitude": -71.3054338402731
+        }
+    },
+    {
+        "location": "Pendleton West",
+        coord: {
+            "latitude": 42.293947870515495, 
+            "longitude": -71.3060904513891
+        }
+    },
+    {
+        "location":"Green Hall",
+        coord: {
+            "latitude": 42.29321531229109, 
+            "longitude": -71.30519395645385
+        }
+    },
+    {
+        "location":"Dower",
+        coord: {
+            "latitude": 42.291166364080276, 
+            "longitude": -71.30101876248223
+        }
+    },
+    {
+        "location": "Stone Davis Hall",
+        coord: {
+            'latitude': 42.291303339873004, 
+            'longitude': -71.30306618447824
+        }
+    },
+    {
+        "location": "College Club",
+        coord: {
+            "latitude": 42.289772337759565, 
+            "longitude": -71.30120494329091
+        }
+    },
+    {
+        "location": "KSC",
+        coord: {
+            "latitude": 42.295632752133876, 
+            "longitude": -71.31174998478227
         }
     }
 
