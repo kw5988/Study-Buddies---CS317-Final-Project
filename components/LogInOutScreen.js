@@ -155,10 +155,10 @@ export default function LoginScreen ({navigation}) {
     
   
     return (
-      <ImageBackground
-      source={require('../assets/screenBackground.jpg')}
-      style={styles.backgroundImage}
-    >
+    //   <ImageBackground
+    //   source={require('../assets/screenBackground.jpg')}
+    //   style={styles.backgroundImage}
+    // >
       <View style={styles.container}>
         <View style={loginInfo.loggedInUser !== null ? styles.hidden: styles.signInOutPane}>
           <Text style={styles.title}> Log In </Text>
@@ -223,7 +223,7 @@ export default function LoginScreen ({navigation}) {
               <Text style={styles.text}>{loginInfo.message}</Text>
             </View>
       </View>
-      </ImageBackground>
+      // </ImageBackground>
    );
       
 };
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     marginBottom: 20,
     textAlign: 'center',
-    color: 'white',
+    color: 'black',
   },
   buttonContainer: {
     marginTop: 20,

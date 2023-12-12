@@ -26,7 +26,11 @@ const FindStudyGroup = ({ navigation }) => {
         const groups = [];
 
         querySnapshot.forEach((doc) => {
+        
           const data = doc.data();
+          data['docID'] = doc.id
+         
+          
           if(
             data.building.toLowerCase().includes(searchTerm.toLowerCase()) ||
             data.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -35,8 +39,6 @@ const FindStudyGroup = ({ navigation }) => {
           {
             groups.push(data);
           }
-
-         
         });
 
         setResults(groups);
@@ -45,12 +47,14 @@ const FindStudyGroup = ({ navigation }) => {
       }
     };
 
-    if (searchTerm !== '') {
-      fetchStudyGroups();
-    } else {
-      // Clear results if the search term is empty
-      setResults([]);
-    }
+    // if (searchTerm !== '') {
+    //   fetchStudyGroups();
+    // } else {
+    //   // Clear results if the search term is empty
+    //   setResults([]);
+      
+    // }
+    fetchStudyGroups();
   }, [searchTerm]);
 
   
@@ -61,7 +65,7 @@ const FindStudyGroup = ({ navigation }) => {
         style={styles.input}
         placeholder="Enter subject, location, or description"
         value={searchTerm}
-        onChangeText={(text) => setSearchTerm(text.toLowerCase())}
+        onChangeText={(text) => setSearchTerm(text)}
       />
       <Button title="Search" onPress={() => setSearchTerm(searchTerm.toLowerCase())} />
       <FlatList
@@ -82,54 +86,6 @@ const FindStudyGroup = ({ navigation }) => {
     </View>
   );
 };
-// const FindStudyGroup = ({navigation}) => {
-//     const [searchTerm, setSearchTerm] = useState('');
-//     const [results, setResults] = useState([]);
-
-  
-//     const handleSearch = () => {
-//         const groups = SampleData[0].studyGroups;
-    
-//         const filteredGroups = Object.values(groups).filter(group => {
-//         return (
-//             group.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//             group.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//             group.description.toLowerCase().includes(searchTerm.toLowerCase())
-//         );
-//         });
-    
-//         setResults(filteredGroups);
-//     };
-
-//   return (
-    
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Search for Study Groups</Text>
-//       <TextInput
-//         style={styles.input}
-//         placeholder="Enter subject or location"
-//         value={searchTerm}
-//         onChangeText={(text) => setSearchTerm(text)}
-//       />
-//       <Button title="Search" onPress={handleSearch} />
-//       <FlatList style={styles.searchResults}
-//         data={results}
-//         keyExtractor={(item) => item.id}
-//         renderItem={({ item }) => (
-//             <TouchableOpacity
-//             style={styles.resultItem}
-//             onPress={() => navigation.navigate('StudyGroupDetails', { studyGroup: item })}
-//           >
-//             <Text>{`Subject: ${item.subject}`}</Text>
-//             <Text>{`Location: ${item.location}`}</Text>
-//             <Text>{`Description: ${item.description}`}</Text>
-//           </TouchableOpacity>
-//         )}
-//       />
-//     </View>
-
-//   );
-// };
 
 const styles = StyleSheet.create({
   container: {

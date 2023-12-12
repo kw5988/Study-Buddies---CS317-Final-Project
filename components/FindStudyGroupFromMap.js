@@ -24,7 +24,10 @@ const FindStudyGroupFromMap = ({ route, navigation }) => {
         const groups = [];
 
         querySnapshot.forEach((doc) => {
-          groups.push(doc.data());
+          const data = doc.data();
+          data['docID'] = doc.id;
+          console.log(data)
+          groups.push(data);
         });
 
         setStudyGroups(groups);

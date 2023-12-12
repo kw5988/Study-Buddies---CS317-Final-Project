@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Dropdown } from 'react-native-element-dropdown';
+import DatePicker from 'react-native-date-picker'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+// import DropDownPicker from 'react-native-dropdown-picker';
+// import { Dropdown } from 'react-native-element-dropdown';
 import { SelectList } from 'react-native-dropdown-select-list'
 // import firestore from 'react-native-firebase/firestore';
 import { // for Firestore access
@@ -99,16 +103,10 @@ const handleCreateGroup = async () => {
 
   return (
     
+
     <View style={styles.container}>
-      {/* <View style={styles.inputGroup}>
-        <Text style={styles.label}>Building:</Text>
-        <TextInput
-          placeholder="Enter Building"
-          value={building}
-          onChangeText={(text) => setBuilding(text)}
-          style={styles.input}
-        />
-      </View> */}
+      
+    <KeyboardAwareScrollView>
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Building:</Text>
         <SelectList 
@@ -117,8 +115,7 @@ const handleCreateGroup = async () => {
         save="value"
         />
       </View>
-   
-
+      
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Room/Location:</Text>
         <TextInput
@@ -138,12 +135,13 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
         {showDatePicker && (
+      
           <DateTimePicker
             value={date}
             mode="date"
             display="default"
             onChange={handleDateChange}
-            // style = {{ backgroundColor: 'black', color:'white'}}
+            style = {{ backgroundColor: 'black', color:'white'}}
           />
         )}
       </View>
@@ -162,7 +160,7 @@ const handleCreateGroup = async () => {
             mode="time"
             display="spinner"
             onChange={handleStartTimeChange}
-            // style = {{ backgroundColor: 'black', color:'white'}}
+            style = {{ backgroundColor: 'black', color:'white'}}
           />
         )}
       </View>
@@ -181,10 +179,11 @@ const handleCreateGroup = async () => {
             mode="time"
             display="spinner"
             onChange={handleEndTimeChange}
-            // style = {{ backgroundColor: 'blue', color:'white'}}
+            style = {{ backgroundColor: 'black', color:'white'}}
           />
         )}
       </View>
+
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Group Size:</Text>
         <TextInput
@@ -195,7 +194,8 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
-
+  
+  
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Subject:</Text>
         <TextInput
@@ -205,7 +205,9 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
+    
 
+    
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Description:</Text>
         <TextInput
@@ -217,8 +219,10 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
+        
+     </KeyboardAwareScrollView>
 
-
+      
       <Button title="Create Group" onPress={handleCreateGroup} />
     </View>
   );
