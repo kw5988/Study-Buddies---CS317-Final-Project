@@ -123,113 +123,121 @@ const StudyGroupDetails = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
-      <View style={styles.container}>
-
-        {errorMessage && (
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
-        )}
-
-        {/* Map Section */}
-        <View style={styles.mapContainer}>
-          <MapView
-            style={styles.map}
-            initialRegion={{
+    <View style={styles.container}>
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: locationData.coord.latitude,
+            longitude: locationData.coord.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }}
+        >
+          <Marker
+            coordinate={{
               latitude: locationData.coord.latitude,
               longitude: locationData.coord.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
             }}
-          >
-            <Marker
-              coordinate={{
-                latitude: locationData.coord.latitude,
-                longitude: locationData.coord.longitude,
-              }}
-              title="INSERT NAME HERE"
-              description="INSERT LOCATION HERE!"
-            />
-          </MapView>
-        </View>
-
-        <Text style={styles.title}>{`Subject: `}</Text>
-        <Text style={styles.details}>{studyGroup.subject}</Text>
-
-        <Text style={styles.title}>{`Location: `}</Text>
-        <Text style={styles.details}>{studyGroup.location}</Text>
-
-        <Text style={styles.title}>{`Description: `}</Text>
-        <Text style={styles.details}>{studyGroup.description}</Text>
-
-        <Text style={styles.title}>{`Max # people: `}</Text>
-        <Text style={styles.details}>{studyGroup.groupSize}</Text>
-
-        <Text style={styles.title}>{`Current # people: `}</Text>
-        <Text style={styles.details}>{studyGroup.groupSize - studyGroup.users.length}</Text>
-
-
-        <Text style={styles.title}>{`Participants: `}</Text>
-        {studyGroup.users.map((user, index) => (
-          <Text key={index} style={styles.details}>{user}</Text>
-        ))}
-
-        <Text style={styles.title}>{`Photos: `}</Text>
-        {images.length > 0 ? (
-          <FlatList
-            data={images}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <Image source={{ uri: item }} style={{ width: 200, height: 200, marginVertical: 5 }} />
-            )}
+            title={studyGroup.building}
+            description={studyGroup.location}
           />
-        ) : (
-          <Text>No images to display</Text>
-        )}
+        </MapView>
+      </View>
 
-        <View style={styles.buttonContainer}>
-        {!studyGroup.users.includes(currentUser) && (
-          <Button 
+
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollView}>
+
+          {errorMessage && (
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
+          )}
+
+          <Text style={styles.title}>{`Building, Location: `}</Text>
+          <Text style={styles.details}>{`${studyGroup.building}, ${studyGroup.location}`}</Text>
+
+          <Text style={styles.title}>{`Subject: `}</Text>
+          <Text style={styles.details}>{studyGroup.subject}</Text>
+
+          {/* causes an error but probs should be added */}
+          {/* <Text style={styles.title}>{`Date: `}</Text>
+          <Text style={styles.details}>{studyGroup.date}</Text> */}
+
+          <Text style={styles.title}>{`Current/Max # people: `}</Text>
+          <Text style={styles.details}>{`${studyGroup.users.length}/${studyGroup.groupSize} (${studyGroup.groupSize - studyGroup.users.length} spots available)`}</Text>
+
+
+          <Text style={styles.title}>{`Participants: `}</Text>
+          {studyGroup.users.map((user, index) => (
+            <Text key={index} style={styles.details}>{user}</Text>
+          ))}
+
+          <Text style={styles.title}>{`Description: `}</Text>
+          <Text style={styles.details}>{studyGroup.description}</Text>
+
+          <Text style={styles.title}>{`Photos: `}</Text>
+
+          {images.length > 0 ? (
+            <FlatList
+              data={images}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Image source={{ uri: item }} style={{ width: 150, height: 150, marginVertical: 5, marginHorizontal: 5 }} />
+              )}
+              horizontal={true}
+            />
+          ) : (
+            <Text>No images to display</Text>
+          )}
+
+        </ScrollView>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        {!studyGroup.users.includes(currentUser) && studyGroup.groupSize - studyGroup.users.length > 0 && (
+          <Button
             mode="contained"
             onPress={joinStudyGroup}
             style={styles.button}
             labelStyle={styles.buttonText}
           >
-           Join Study Group
+            Join Study Group
           </Button>
-          
-          )}
-          {studyGroup.users.includes(currentUser) && (
-            <Button
-              mode="contained"
-              onPress={leaveStudyGroup}
-              style={styles.button}
-              labelStyle={styles.buttonText}
-            >
-              Leave Study Group
-            </Button>
-          )}
 
-          {studyGroup.users.includes(currentUser) && (
-              <Button
-                mode="contained"
-                onPress={pickImage}
-                style={styles.button}
-                labelStyle={styles.buttonText}
-              >
-                Add Photo
-              </Button>
-            )}
-        </View>
+        )}
+        {studyGroup.users.includes(currentUser) && (
+          <Button
+            mode="contained"
+            onPress={leaveStudyGroup}
+            style={styles.button}
+            labelStyle={styles.buttonText}
+          >
+            Leave Study Group
+          </Button>
+        )}
+
+        {studyGroup.users.includes(currentUser) && (
+          <Button
+            mode="contained"
+            onPress={pickImage}
+            style={styles.button}
+            labelStyle={styles.buttonText}
+          >
+            Add Photo
+          </Button>
+        )}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 16,
+    flex: 3,
+    height: 700,
+    padding: 5,
+    marginBottom: 5,
   },
   errorMessage: {
     color: 'red',
@@ -239,23 +247,25 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: 0,
+    marginBottom: 65,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 8,
+    marginTop: 5,
   },
   details: {
-    fontSize: 18,
-    marginBottom: 8,
+    fontSize: 20,
+    marginBottom: 5,
   },
   mapContainer: {
     flex: 1,
-    marginTop: 16,
+    marginTop: 1,
+    marginBottom: 1,
     borderWidth: 1,
     borderColor: 'gray',
-    borderRadius: 8,
+    borderRadius: 10,
     overflow: 'hidden',
   },
   map: {
@@ -269,7 +279,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    fontSize: 15,
+    fontSize: 14,
   }
 });
 
