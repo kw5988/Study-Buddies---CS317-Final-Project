@@ -14,6 +14,7 @@ import FindStudyGroupFromMap from "./components/FindStudyGroupFromMap.js";
 import StudyGroupDetails from './components/StudyGroupDetails';
 import ViewCampusMap from './components/ViewCampusMap';
 import CreateStudyGroup from "./components/CreateStudyGroup.js";
+import Profile from "./components/Profile.js";
 
 import { emailOf } from './utils';
 import { firebaseConfig } from './firebaseConfig.js'
@@ -103,6 +104,7 @@ export default function App() {
         <Stack.Screen name="ViewCampusMap" component={ViewCampusMap} />
         <Stack.Screen name="FindStudyGroupFromMap" component={FindStudyGroupFromMap} />
         <Stack.Screen name="CreateStudyGroup" component={CreateStudyGroup} />
+        <Stack.Screen name="Profile" component={Profile} />
 
 
        

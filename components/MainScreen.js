@@ -36,6 +36,16 @@ const MainScreen = ({ navigation }) => {
           >
             View campus map
           </Button>
+
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate('Profile')}
+            style={styles.button}
+            labelStyle={styles.buttonText}
+          >
+            View Profile
+          </Button>
+          
         </View>
       </View>
     // </ImageBackground>
