@@ -187,14 +187,17 @@ const StudyGroupDetails = ({ route, navigation }) => {
         )}
 
         <View style={styles.buttonContainer}>
-          <Button
+        {!studyGroup.users.includes(currentUser) && (
+          <Button 
             mode="contained"
             onPress={joinStudyGroup}
             style={styles.button}
             labelStyle={styles.buttonText}
           >
-            Join Study Group
+           Join Study Group
           </Button>
+          
+          )}
           {studyGroup.users.includes(currentUser) && (
             <Button
               mode="contained"
@@ -204,8 +207,9 @@ const StudyGroupDetails = ({ route, navigation }) => {
             >
               Leave Study Group
             </Button>
+          )}
 
-          ) && (
+          {studyGroup.users.includes(currentUser) && (
               <Button
                 mode="contained"
                 onPress={pickImage}
@@ -214,7 +218,6 @@ const StudyGroupDetails = ({ route, navigation }) => {
               >
                 Add Photo
               </Button>
-
             )}
         </View>
       </View>
