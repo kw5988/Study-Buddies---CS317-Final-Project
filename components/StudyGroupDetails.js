@@ -13,6 +13,9 @@ import StateContext from './StateContext.js';
 import { emailOf } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { // for Firebase storage access (to store images)
+  ref, getStorage, uploadBytes, uploadBytesResumable, getDownloadURL
+} from "firebase/storage";
 
 
 
@@ -27,9 +30,11 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
   const docID = studyGroupInformation['studyGroup']['docID']
   const [studyGroupUsers, setStudyGroupUsers] = useState(studyGroupInformation.users);
+  const [studyGroupPhotos, setStudyGroupPhotos] = useState(studyGroupInformation.photos);
   // const studyGroupLocation = studyGroup['location']
 
   const locationData = locations.find(loc => loc.location === studyGroup.building);
+ 
 
   const joinStudyGroup = async () => {
     //check if user is logged in
@@ -103,9 +108,12 @@ const StudyGroupDetails = ({ route, navigation }) => {
       console.error('Error leaving study group:', error);
     }
   };
+ 
   const [images, setImages] = useState([]);
-
+  const imgStorage = getStorage();
+  
   const pickImage = async () => {
+    
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -114,13 +122,80 @@ const StudyGroupDetails = ({ route, navigation }) => {
         quality: 1,
       });
 
+
       if (!result.cancelled) {
-        setImages([...images, result.assets[0].uri]);
+        const newImageUri = result.assets[0].uri;
+        console.log(newImageUri);
+        console.log(result);
+
+        // Update state with the new image
+        setImages(previousImages => [...previousImages, newImageUri]);
+
+        // Upload the new image
+        uploadToStorage(newImageUri);
+        
       }
+      
     } catch (error) {
       console.error('Error picking image:', error);
     }
+    
+    
   };
+
+
+
+
+    async function uploadToStorage(uri) {
+      try {
+
+        // Fetch the file from the local file system
+        console.log('1');
+        const response = await fetch(uri);
+        // Convert the file to a blob
+        console.log('2');
+        const blob = await response.blob();
+        console.log('3');
+        // Create a reference to the Firebase storage"
+
+        const imgLoc = studyGroup.photos.length;
+        console.log(`images/${(String(docID))}/${imgLoc}/`)
+        const storageRef = ref(imgStorage, (`images/${(String(docID))}/${imgLoc}/`));
+        console.log('4');
+        // Upload the blob to Firebase Storage
+        const snapshot = await uploadBytes(storageRef, blob);
+        console.log('Uploaded a blob or file!', snapshot);
+    
+        // Get the download URL (if needed)
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        console.log('File available at', downloadURL);
+
+        const studyGroupRef = doc(firebaseInfo.db, 'studyGroups', docID);
+        const studyGroupDoc = await getDoc(studyGroupRef);
+        const photos = studyGroupDoc.data().photos || [];
+
+        //setStudyGroupPhotos(previousPhotos => [...previousPhotos, uri]);
+        console.log('5');
+        await updateDoc(studyGroupRef, {
+        photos: arrayUnion(uri)});
+        
+        const updatedGroup = studyGroupDoc.data().photos;
+        setStudyGroupPhotos(updatedGroup);
+        console.log(studyGroupPhotos)
+     
+
+      } catch (error) {
+        console.error('Error uploading file to Firebase Storage:', error);
+
+
+      }
+        
+
+
+    }
+
+  
+
 
   return (
     <View style={styles.container}>
