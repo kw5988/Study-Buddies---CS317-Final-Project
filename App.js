@@ -14,7 +14,8 @@ import FindStudyGroupFromMap from "./components/FindStudyGroupFromMap.js";
 import StudyGroupDetails from './components/StudyGroupDetails';
 import ViewCampusMap from './components/ViewCampusMap';
 import CreateStudyGroup from "./components/CreateStudyGroup.js";
-import Profile from "./components/Profile.js";
+import Profile from "./components/Profile 2.js";
+
 
 import { emailOf } from './utils';
 import { firebaseConfig } from './firebaseConfig.js'

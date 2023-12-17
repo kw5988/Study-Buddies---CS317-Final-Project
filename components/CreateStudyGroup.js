@@ -42,6 +42,7 @@ const CreateStudyGroup = ({ onCreateGroup, navigation }) => {
   const allProps = useContext(StateContext);
   const loginInfo = allProps.loginProps;
   const firebaseInfo = allProps.firebaseProps;
+  const [photos, setPhotos] = useState([]);
   const [users, setUsers] = useState([emailOf(firebaseInfo.auth.currentUser)]);  // Set initial user to the email
 
 
@@ -64,6 +65,7 @@ const handleCreateGroup = async () => {
       groupSize,
       subject,
       description,
+      photos,
     };
     console.log(groupData)
 
