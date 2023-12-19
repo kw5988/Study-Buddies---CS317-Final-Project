@@ -30,7 +30,8 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
   const docID = studyGroupInformation['studyGroup']['docID']
   const [studyGroupUsers, setStudyGroupUsers] = useState(studyGroupInformation.users);
-  const [studyGroupPhotos, setStudyGroupPhotos] = useState(studyGroupInformation.photos);
+  const [studyGroupPhotos, setStudyGroupPhotos] = useState(studyGroup.photos);
+  const [images, setImages] = useState([]);
   // const studyGroupLocation = studyGroup['location']
 
   const locationData = locations.find(loc => loc.location === studyGroup.building);
@@ -109,9 +110,8 @@ const StudyGroupDetails = ({ route, navigation }) => {
     }
   };
  
-  const [images, setImages] = useState([]);
+  //const [images, setImages] = useState([]);
   const imgStorage = getStorage();
-  
   const pickImage = async () => {
     
     try {
@@ -120,81 +120,102 @@ const StudyGroupDetails = ({ route, navigation }) => {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
+
       });
 
 
       if (!result.cancelled) {
+
+
         const newImageUri = result.assets[0].uri;
         console.log(newImageUri);
-        console.log(result);
-
-        // Update state with the new image
-        setImages(previousImages => [...previousImages, newImageUri]);
-
-        // Upload the new image
-        uploadToStorage(newImageUri);
-        
-      }
-      
-    } catch (error) {
-      console.error('Error picking image:', error);
-    }
-    
-    
-  };
-
-
-
-
-    async function uploadToStorage(uri) {
-      try {
-
-        // Fetch the file from the local file system
-        console.log('1');
-        const response = await fetch(uri);
-        // Convert the file to a blob
-        console.log('2');
-        const blob = await response.blob();
-        console.log('3');
-        // Create a reference to the Firebase storage"
-
-        const imgLoc = studyGroup.photos.length;
-        console.log(`images/${(String(docID))}/${imgLoc}/`)
-        const storageRef = ref(imgStorage, (`images/${(String(docID))}/${imgLoc}/`));
-        console.log('4');
-        // Upload the blob to Firebase Storage
-        const snapshot = await uploadBytes(storageRef, blob);
-        console.log('Uploaded a blob or file!', snapshot);
-    
-        // Get the download URL (if needed)
-        const downloadURL = await getDownloadURL(snapshot.ref);
-        console.log('File available at', downloadURL);
 
         const studyGroupRef = doc(firebaseInfo.db, 'studyGroups', docID);
         const studyGroupDoc = await getDoc(studyGroupRef);
         const photos = studyGroupDoc.data().photos || [];
-
-        //setStudyGroupPhotos(previousPhotos => [...previousPhotos, uri]);
+        
         console.log('5');
         await updateDoc(studyGroupRef, {
-        photos: arrayUnion(uri)});
+        photos: arrayUnion(newImageUri)});
         
-        const updatedGroup = studyGroupDoc.data().photos;
+        const updatedGroup = photos;
         setStudyGroupPhotos(updatedGroup);
-        console.log(studyGroupPhotos)
-     
-
-      } catch (error) {
-        console.error('Error uploading file to Firebase Storage:', error);
-
-
-      }
+        navigation.navigate('MainScreen');
+        //console.log(studyGroupPhotos)
         
+        //console.log(result);
 
+        // Update state with the new image
+        //setImages(previousImages => [...previousImages, newImageUri]);
+        //console.log(newImageUri);
+        // Upload the new image
+
+        
+       
+
+        uploadToStorage(newImageUri);
+        
+      
+    }}
+    catch (error) {
+      console.error('Error picking image:', error);
+    }
+  
+  };
+
+    async function uploadToStorage(uri){
+
+      try{
+
+      const fetchResponse = await fetch(uri);
+      const blob = await fetchResponse.blob();
+
+      // Create a reference to the Firebase storage"
+      const now = new Date();
+      const timestamp = now.getTime();
+      //console.log (studyGroup.photos.length);
+      console.log(`images/${(String(docID))}/${timestamp}/`)
+      const storageRef = ref(imgStorage, (`images/${(String(docID))}/${timestamp}/`));
+
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+      console.log(`Uploading image for message with timestamp ${timestamp} ...`);
+      uploadTask.on('state_changed',
+        // This callback is called with a snapshot on every progress update
+        (snapshot) => {
+          // Get task progress, including the number of bytes uploaded 
+          // and the total number of bytes to be uploaded
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+              }
+        }, 
+        // This callback is called when there's an error in the upload
+        (error) => {
+          console.error(error);
+        }, 
+        // This callback is called when the upload is finished 
+        async function() {
+          console.log(`Uploading image for message with timestamp ${timestamp} succeeded!`);
+          // Once the upload is finished, get the downloadURL for the uploaed image
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log(`Image fileMessage for message with timestamp ${timestamp} available at ${downloadURL}`);
+        }      
+      ); // end arguments to uploadTask.on
+
+       
+    } catch (error) {
+      console.error('Error uploading file to Firebase Storage:', error)
 
     }
+    };
 
-  
+
 
 
   return (
@@ -252,9 +273,9 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
           <Text style={styles.title}>{`Photos: `}</Text>
 
-          {images.length > 0 ? (
+          {studyGroup.photos.length > 0 ? ( //make consistent
             <FlatList
-              data={images}
+              data={studyGroupPhotos}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
                 <Image source={{ uri: item }} style={{ width: 150, height: 150, marginVertical: 5, marginHorizontal: 5 }} />
