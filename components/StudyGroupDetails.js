@@ -267,29 +267,42 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
         </ScrollView>
       </View>
-
+    
       <View style={styles.buttonContainer}>
-        {!studyGroup.users.includes(currentUser) && studyGroup.groupSize - studyGroup.users.length > 0 && (
-          <Button
-            mode="contained"
-            onPress={joinStudyGroup}
-            style={styles.button}
-            labelStyle={styles.buttonText}
-          >
-            Join Study Group
-          </Button>
+        <View style={styles.buttonRow}>
+          {!studyGroup.users.includes(currentUser) && studyGroup.groupSize - studyGroup.users.length > 0 && (
+            <Button
+              mode="contained"
+              onPress={joinStudyGroup}
+              style={styles.button}
+              labelStyle={styles.buttonText}
+            >
+              Join Study Group
+            </Button>
+          )}
 
-        )}
-        {studyGroup.users.includes(currentUser) && (
-          <Button
-            mode="contained"
-            onPress={leaveStudyGroup}
-            style={styles.button}
-            labelStyle={styles.buttonText}
-          >
-            Leave Study Group
-          </Button>
-        )}
+          {studyGroup.users.includes(currentUser) && (
+            <Button
+              mode="contained"
+              onPress={leaveStudyGroup}
+              style={styles.button}
+              labelStyle={styles.buttonText}
+            >
+              Leave Study Group
+            </Button>
+          )}
+
+          {studyGroup.users.includes(currentUser) && (
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('StudyGroupChat', { studyGroupId: studyGroup.docID })}
+              style={styles.button}
+              labelStyle={styles.buttonText}
+            >
+              Message
+            </Button>
+          )}
+        </View>
 
         {studyGroup.users.includes(currentUser) && (
           <Button
