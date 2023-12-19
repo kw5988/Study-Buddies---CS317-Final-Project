@@ -66,6 +66,7 @@ const handleCreateGroup = async () => {
       subject,
       description,
       photos,
+      messages: [], // Initialize an empty array for messages
     };
     console.log(groupData)
 
