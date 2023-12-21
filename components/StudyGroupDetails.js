@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { View, Text, StyleSheet, FlatList, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import sampleData from './SampleData';
 import locations from './locations';
@@ -31,7 +31,7 @@ const StudyGroupDetails = ({ route, navigation }) => {
   const docID = studyGroupInformation['studyGroup']['docID']
   const [studyGroupUsers, setStudyGroupUsers] = useState(studyGroupInformation.users);
   const [studyGroupPhotos, setStudyGroupPhotos] = useState(studyGroup.photos);
-  const [images, setImages] = useState([]);
+  const [expandedPhoto, setExpandedPhoto] = useState(null);
   // const studyGroupLocation = studyGroup['location']
 
   const locationData = locations.find(loc => loc.location === studyGroup.building);
@@ -275,13 +275,18 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
           {studyGroup.photos.length > 0 ? ( //make consistent
             <FlatList
-              data={studyGroupPhotos}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <Image source={{ uri: item }} style={{ width: 150, height: 150, marginVertical: 5, marginHorizontal: 5 }} />
-              )}
-              horizontal={true}
-            />
+            data={studyGroupPhotos}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity onPress={() => setExpandedPhoto(expandedPhoto === index ? null : index)}>
+                <Image 
+                  source={{ uri: item }} 
+                  style={expandedPhoto === index ? styles.expandedImage : styles.thumbnailImage} 
+                />
+              </TouchableOpacity>
+            )}
+            horizontal={true}
+          />
           ) : (
             <Text>No images to display</Text>
           )}
@@ -386,6 +391,18 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 15,
     justifyContent: 'center',
+  },
+  thumbnailImage: {
+    width: 150,
+    height: 150,
+    marginVertical: 5,
+    marginHorizontal: 5,
+  },
+  expandedImage: {
+    width: 400,
+    height: 400,
+    marginVertical: 5,
+    marginHorizontal: 5,
   },
   buttonText: {
     fontSize: 14,
