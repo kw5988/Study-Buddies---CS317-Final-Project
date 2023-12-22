@@ -4,11 +4,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-// import DropDownPicker from 'react-native-dropdown-picker';
-// import { Dropdown } from 'react-native-element-dropdown';
 import { SelectList } from 'react-native-dropdown-select-list'
-// import firestore from 'react-native-firebase/firestore';
+
 import { // for Firestore access
     collection, doc, addDoc, setDoc,
     query, where, getDocs
@@ -16,13 +13,6 @@ import { // for Firestore access
 import { useContext } from "react";
 import StateContext from './StateContext.js';
 import { emailOf } from '../utils';
-// import { // access to Firestore features:
-//     getFirestore, 
-// } from "firebase/firestore";
-// import { initializeApp } from 'firebase/app';
-
-
-// import { firestore } from '../firebaseConfig'
 
 import locations from './locations';
 
@@ -46,15 +36,11 @@ const CreateStudyGroup = ({ onCreateGroup, navigation }) => {
   const [users, setUsers] = useState([emailOf(firebaseInfo.auth.currentUser)]);  // Set initial user to the email
 
 
-// console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
-
   locationsObject = []
   locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
 
-//   setUsers(emailOf(firebaseInfo.auth.currentUser))
 const handleCreateGroup = async () => {
     // Create an object with the group details
-    
     const groupData = {
       building: selectedBuilding,
       location,
@@ -75,7 +61,6 @@ const handleCreateGroup = async () => {
         const collectionRef = collection(firebaseInfo.db, '/studyGroups');
         const docRef = await addDoc(collectionRef, groupData);  
         // Pass the created group data along with the ID to the callback function
-        // onCreateGroup({ ...groupData, id: docRef.id });
         navigation.navigate('MainScreen');
       } catch (error) {
         console.error('Error creating group:', error);

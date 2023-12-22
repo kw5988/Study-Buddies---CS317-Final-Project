@@ -130,7 +130,6 @@ export default function LoginScreen () {
         .catch((error) => {
           console.log(`signUpUserEmailPassword: sign in failed for email ${loginInfo.email}`);
           const errorMessage = error.message;
-          // const errorCode = error.code; // Could use this, too.
           console.log(`signInUserEmailPassword: ${errorMessage}`);
           setErrorMsg(`signInUserEmailPassword: ${errorMessage}`);
         });
@@ -144,7 +143,6 @@ export default function LoginScreen () {
           loginInfo.setLoggedInUser(firebaseInfo.auth.currentUser);
           console.log("checkEmailVerification: setErrorMsg('')");
           setErrorMsg('');
-          //setPscreen('chat'); // Go to the Chat PseudoScreen
         } else {
           console.log('checkEmailVerification: remind user to verify email');
           setErrorMsg(`You cannot sign in as ${firebaseInfo.auth.currentUser.email} until you verify that this is your email address. You can verify this email address by clicking on the link in a verification email sent by this app to ${auth.currentUser.email}.`)
