@@ -32,6 +32,8 @@ const StudyGroupDetails = ({ route, navigation }) => {
   const [studyGroupUsers, setStudyGroupUsers] = useState(studyGroupInformation.users);
   const [studyGroupPhotos, setStudyGroupPhotos] = useState(studyGroup.photos);
   const [expandedPhoto, setExpandedPhoto] = useState(null);
+  //const [url, setUrl] = useState('');
+  const [downloadURL, setdownloadURL] = useState('');
   // const studyGroupLocation = studyGroup['location']
 
   const locationData = locations.find(loc => loc.location === studyGroup.building);
@@ -113,7 +115,6 @@ const StudyGroupDetails = ({ route, navigation }) => {
   //const [images, setImages] = useState([]);
   const imgStorage = getStorage();
   const pickImage = async () => {
-    
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -125,36 +126,26 @@ const StudyGroupDetails = ({ route, navigation }) => {
 
 
       if (!result.cancelled) {
-
+        console.log('hello');
 
         const newImageUri = result.assets[0].uri;
         console.log(newImageUri);
 
-        const studyGroupRef = doc(firebaseInfo.db, 'studyGroups', docID);
+       const url = await uploadToStorage(newImageUri);
+       console.log('hello again');
+       const studyGroupRef = doc(firebaseInfo.db, 'studyGroups', docID);
+        console.log('6');
         const studyGroupDoc = await getDoc(studyGroupRef);
         const photos = studyGroupDoc.data().photos || [];
         
         console.log('5');
         await updateDoc(studyGroupRef, {
-        photos: arrayUnion(newImageUri)});
+        photos: arrayUnion(url)});
         
         const updatedGroup = photos;
         setStudyGroupPhotos(updatedGroup);
         navigation.navigate('MainScreen');
-        //console.log(studyGroupPhotos)
-        
-        //console.log(result);
 
-        // Update state with the new image
-        //setImages(previousImages => [...previousImages, newImageUri]);
-        //console.log(newImageUri);
-        // Upload the new image
-
-        
-       
-
-        uploadToStorage(newImageUri);
-        
       
     }}
     catch (error) {
@@ -163,28 +154,22 @@ const StudyGroupDetails = ({ route, navigation }) => {
   
   };
 
+
     async function uploadToStorage(uri){
 
-      try{
-
-      const fetchResponse = await fetch(uri);
-      const blob = await fetchResponse.blob();
-
-      // Create a reference to the Firebase storage"
-      const now = new Date();
-      const timestamp = now.getTime();
-      //console.log (studyGroup.photos.length);
-      console.log(`images/${(String(docID))}/${timestamp}/`)
-      const storageRef = ref(imgStorage, (`images/${(String(docID))}/${timestamp}/`));
-
-      const uploadTask = uploadBytesResumable(storageRef, blob);
-      console.log(`Uploading image for message with timestamp ${timestamp} ...`);
-      uploadTask.on('state_changed',
-        // This callback is called with a snapshot on every progress update
-        (snapshot) => {
-          // Get task progress, including the number of bytes uploaded 
-          // and the total number of bytes to be uploaded
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      try {
+        const fetchResponse = await fetch(uri);
+        const blob = await fetchResponse.blob();
+        const now = new Date();
+        const timestamp = now.getTime();
+        const storageRef = ref(imgStorage, `images/${docID}/${timestamp}/`);
+    
+        return new Promise((resolve, reject) => {
+          const uploadTask = uploadBytesResumable(storageRef, blob);
+    
+          uploadTask.on('state_changed',
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log('Upload is ' + progress + '% done');
           switch (snapshot.state) {
             case 'paused':
@@ -194,22 +179,25 @@ const StudyGroupDetails = ({ route, navigation }) => {
               console.log('Upload is running');
               break;
               }
-        }, 
-        // This callback is called when there's an error in the upload
-        (error) => {
-          console.error(error);
-        }, 
-        // This callback is called when the upload is finished 
-        async function() {
-          console.log(`Uploading image for message with timestamp ${timestamp} succeeded!`);
-          // Once the upload is finished, get the downloadURL for the uploaed image
-          const downloadURL = await getDownloadURL(storageRef);
-          console.log(`Image fileMessage for message with timestamp ${timestamp} available at ${downloadURL}`);
-        }      
-      ); // end arguments to uploadTask.on
-
-       
-    } catch (error) {
+            },
+            (error) => {
+              console.error(error);
+              reject(error);
+            },
+            async () => {
+              try {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                console.log(`Image available at ${downloadURL}`);
+                resolve(downloadURL);
+              } catch (error) {
+                console.error('Error getting download URL:', error);
+                reject(error);
+              }
+            }
+          );
+        });
+      } 
+       catch (error) {
       console.error('Error uploading file to Firebase Storage:', error)
 
     }
