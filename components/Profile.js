@@ -62,7 +62,7 @@ const Profile = ({ navigation }) => {
         <FlatList
           style={styles.searchResults}
           data={results}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.docID}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.resultItem}
