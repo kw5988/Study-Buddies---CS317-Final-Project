@@ -56,10 +56,11 @@ export default function SignUpScreen () {
                        // or else we wouldn't be here
       }
       
-      if (!(loginInfo.email.includes('@'))) {
-        setErrorMsg('Not a valid email address');
+      if (!(loginInfo.email.includes('@wellesley.edu'))) {
+        setErrorMsg('Must be a valid Wellesley College email');
         return;
       }
+
       if (loginInfo.password.length < 6) {
         setErrorMsg('Password too short');
         return;
@@ -146,7 +147,6 @@ export default function SignUpScreen () {
           loginInfo.setLoggedInUser(firebaseInfo.auth.currentUser);
           console.log("checkEmailVerification: setErrorMsg('')");
           setErrorMsg('');
-          //setPscreen('chat'); // Go to the Chat PseudoScreen
         } else {
           console.log('checkEmailVerification: remind user to verify email');
           setErrorMsg(`You cannot sign in as ${firebaseInfo.auth.currentUser.email} until you verify that this is your email address. You can verify this email address by clicking on the link in a verification email sent by this app to ${auth.currentUser.email}.`)
