@@ -20,10 +20,11 @@ export default function SignUpScreen ({ navigation }) {
 
   console.log(allProps);
   const [errorMsg, setErrorMsg] = useState('');
-  loginInfo.setMessage('');
+
   
     useEffect(() => {
       // Executed when entering component
+      loginInfo.setMessage('');
       console.log('hello:', firebaseInfo.auth.currentUser);
       console.log('Entering SignInOutPScreen');
       console.log(`on enter: emailOf(auth.currentUser)=${emailOf(firebaseInfo.auth.currentUser)}`);

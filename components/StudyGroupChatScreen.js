@@ -5,7 +5,7 @@ import { emailOf } from '../utils';
 import StateContext from './StateContext.js';
 import { useContext } from 'react';
 
-const StudyGroupChat = ({ route }) => {
+const StudyGroupChat = ({ route, navigation }) => {
   const allProps = useContext(StateContext);
   const firebaseInfo = allProps.firebaseProps;
   const currentUser = emailOf(firebaseInfo.auth.currentUser);
@@ -73,32 +73,41 @@ const StudyGroupChat = ({ route }) => {
   };
 
   const onSend = () => {
+
     sendMessage(newMessage);
+    navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-            
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }} 
+      //only need keyboardverticaloffset and behavior for ios, android does it automatically I believe?
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+    >
+      <View style={styles.container}>
         <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
             <View style={item.user === currentUser ? styles.userMessageContainer : styles.otherMessageContainer}>
             <Text style={styles.messageUser}>{item.user}</Text>
             <Text style={styles.messageText}>{item.text}</Text>
             </View>
-        )}
+          )}
+       
         />
-      <KeyboardAvoidingView behavior="padding" style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Type your message..."
-          value={newMessage}
-          onChangeText={(text) => setNewMessage(text)}
-        />
-        <Button title="Send" onPress={onSend} />
-      </KeyboardAvoidingView>
-    </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Type your message..."
+            value={newMessage}
+            onChangeText={(text) => setNewMessage(text)}
+          />
+          <Button title="Send" onPress={onSend} />
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
