@@ -126,6 +126,7 @@ export default function LoginScreen ({navigation}) {
           // Note: could store userCredential here if wanted it later ...
           // console.log(`createUserWithEmailAndPassword: setCredential`);
           // setCredential(userCredential);
+          navigation.navigate('MainScreen');
       
           })
         .catch((error) => {
@@ -155,10 +156,10 @@ export default function LoginScreen ({navigation}) {
     
   
     return (
-    //   <ImageBackground
-    //   source={require('../assets/screenBackground.jpg')}
-    //   style={styles.backgroundImage}
-    // >
+      <ImageBackground
+      source={require('../assets/screenBackground.jpg')}
+      style={styles.backgroundImage}
+    >
       <View style={styles.container}>
         <View style={loginInfo.loggedInUser !== null ? styles.hidden: styles.signInOutPane}>
           <Text style={styles.title}> Log In </Text>
@@ -166,7 +167,8 @@ export default function LoginScreen ({navigation}) {
               <Text style={styles.inputLabel}>Email:</Text>
               <TextInput 
                 placeholder="Enter your email address" 
-                style={styles.textInput} 
+                placeholderTextColor="black" 
+                style={[styles.textInput, { width: '100%' }]} 
                 value={loginInfo.email} 
                 onChangeText={ 
                   text => {
@@ -179,7 +181,8 @@ export default function LoginScreen ({navigation}) {
               <Text style={styles.inputLabel}>Password:</Text>
               <TextInput 
                 placeholder="Enter your password" 
-                style={styles.textInput} 
+                placeholderTextColor="black" 
+                style={[styles.textInput, { width: '100%' }]} 
                 value={loginInfo.password} 
                 onChangeText={ 
                   text => {
@@ -223,7 +226,7 @@ export default function LoginScreen ({navigation}) {
               <Text style={styles.text}>{loginInfo.message}</Text>
             </View>
       </View>
-      // </ImageBackground>
+       </ImageBackground>
    );
       
 };

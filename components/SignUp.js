@@ -11,7 +11,7 @@ import { emailOf } from '../utils';
 //import styles from '../styles';
 
 
-export default function SignUpScreen () {
+export default function SignUpScreen ({ navigation }) {
 
   
   const allProps = useContext(StateContext);
@@ -98,6 +98,7 @@ export default function SignUpScreen () {
           console.log(`createUserWithEmailAndPassword: ${errorMessage}`);
           setErrorMsg(`createUserWithEmailAndPassword: ${errorMessage}`);
         });
+        navigation.navigate('LoginScreen');
     }
 
     function signInUserEmailPassword() {
@@ -167,7 +168,8 @@ export default function SignUpScreen () {
               <Text style={styles.inputLabel}>Email:</Text>
               <TextInput 
                 placeholder="Enter your email address" 
-                style={styles.textInput} 
+                placeholderTextColor="black" 
+                style={[styles.textInput, { width: '100%' }]} 
                 value={loginInfo.email} 
                 onChangeText={ 
                   text => {
@@ -180,7 +182,8 @@ export default function SignUpScreen () {
               <Text style={styles.inputLabel}>Password:</Text>
               <TextInput 
                 placeholder="Enter your password" 
-                style={styles.textInput} 
+                placeholderTextColor="black" 
+                style={[styles.textInput, { width: '100%' }]} 
                 value={loginInfo.password} 
                 onChangeText={ 
                   text => {
@@ -230,7 +233,7 @@ const styles = StyleSheet.create({
       fontSize: 40,
       marginBottom: 20,
       textAlign: 'center',
-      color: 'white',
+      color: 'black',
     },
     buttonContainer: {
       marginTop: 20,

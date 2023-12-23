@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Modal, TouchableOpacity  } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-// import DropDownPicker from 'react-native-dropdown-picker';
-// import { Dropdown } from 'react-native-element-dropdown';
 import { SelectList } from 'react-native-dropdown-select-list'
-// import firestore from 'react-native-firebase/firestore';
+
 import { // for Firestore access
     collection, doc, addDoc, setDoc,
     query, where, getDocs
@@ -16,13 +13,6 @@ import { // for Firestore access
 import { useContext } from "react";
 import StateContext from './StateContext.js';
 import { emailOf } from '../utils';
-// import { // access to Firestore features:
-//     getFirestore, 
-// } from "firebase/firestore";
-// import { initializeApp } from 'firebase/app';
-
-
-// import { firestore } from '../firebaseConfig'
 
 import locations from './locations';
 
@@ -46,15 +36,11 @@ const CreateStudyGroup = ({ onCreateGroup, navigation }) => {
   const [users, setUsers] = useState([emailOf(firebaseInfo.auth.currentUser)]);  // Set initial user to the email
 
 
-// console.log(`EMAIL OF PERSON=${emailOf(firebaseInfo.auth.currentUser)}`);
-
   locationsObject = []
   locations.map((location) => locationsObject.push({label: location.location, value: location.location}))
 
-//   setUsers(emailOf(firebaseInfo.auth.currentUser))
 const handleCreateGroup = async () => {
     // Create an object with the group details
-    
     const groupData = {
       building: selectedBuilding,
       location,
@@ -75,7 +61,6 @@ const handleCreateGroup = async () => {
         const collectionRef = collection(firebaseInfo.db, '/studyGroups');
         const docRef = await addDoc(collectionRef, groupData);  
         // Pass the created group data along with the ID to the callback function
-        // onCreateGroup({ ...groupData, id: docRef.id });
         navigation.navigate('MainScreen');
       } catch (error) {
         console.error('Error creating group:', error);
@@ -83,6 +68,37 @@ const handleCreateGroup = async () => {
     };
 
 
+    const handleTimeChange = (event, selected) => {
+      // setShowStartTimePicker(false);
+      // setShowEndTimePicker(false);
+      if (selected) {
+        setStartDateTime(selected);
+        setEndDateTime(selected);
+      }
+      const confirmStartTime = (selected) => {
+        setStartModalVisible(false);
+        if (selected) {
+          setStartDateTime(selected);
+        }
+      };
+    
+      const confirmEndTime = (selected) => {
+        setEndModalVisible(false);
+        if (selected) {
+          setEndDateTime(selected);
+        }
+      };
+    };
+  
+    
+    const confirmStartTime = () => {
+      setShowStartTimePicker(false);
+    };
+  
+    const confirmEndTime = () => {
+      setShowEndTimePicker(false);
+    };
+  
   const handleDateChange = (event, selected) => {
     setShowDatePicker(false);
     if (selected) {
@@ -104,21 +120,19 @@ const handleCreateGroup = async () => {
     }
   };
 
-  return (
-    
 
-    <View style={styles.container}>
-      
+return (
+  <View style={styles.container}>
     <KeyboardAwareScrollView>
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Building:</Text>
-        <SelectList 
-        setSelected={(val) => setSelected(val)} 
-        data={locationsObject} 
-        save="value"
+        <SelectList
+          setSelected={(val) => setSelected(val)}
+          data={locationsObject}
+          save="value"
         />
       </View>
-      
+
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Room/Location:</Text>
         <TextInput
@@ -130,8 +144,8 @@ const handleCreateGroup = async () => {
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Date:</Text>
-        <TextInput
+         <Text style={styles.label}>Date:</Text>
+         <TextInput
           placeholder="Select Date"
           value={date.toLocaleDateString()}
           onFocus={() => setShowDatePicker(true)}
@@ -144,7 +158,7 @@ const handleCreateGroup = async () => {
             mode="date"
             display="default"
             onChange={handleDateChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
+            style = {{ backgroundColor: '#eff0f6', color:'white'}}
           />
         )}
       </View>
@@ -153,38 +167,52 @@ const handleCreateGroup = async () => {
         <Text style={styles.label}>Start Time:</Text>
         <TextInput
           placeholder="Select start time"
-          value={startDateTime.toLocaleTimeString()}
+          value={startDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           onFocus={() => setShowStartTimePicker(true)}
-          style = {styles.input}
+          style={styles.input}
         />
-        {showStartTimePicker && (
-          <DateTimePicker
-            value={startDateTime}
-            mode="time"
-            display="spinner"
-            onChange={handleStartTimeChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
-          />
-        )}
+        <Modal visible={showStartTimePicker} transparent animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <DateTimePicker
+                value={startDateTime}
+                mode="time"
+                display="spinner"
+                onChange={handleTimeChange}
+                style={{ backgroundColor: '#eff0f6', color: 'white' }}
+              />
+              <TouchableOpacity onPress={confirmStartTime}>
+                <Text style={styles.confirmButton}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>End Time:</Text>
         <TextInput
           placeholder="Select end time"
-          value={endDateTime.toLocaleTimeString()}
+          value={endDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           onFocus={() => setShowEndTimePicker(true)}
           style={styles.input}
         />
-        {showEndTimePicker && (
-          <DateTimePicker
-            value={endDateTime}
-            mode="time"
-            display="spinner"
-            onChange={handleEndTimeChange}
-            style = {{ backgroundColor: 'black', color:'white'}}
-          />
-        )}
+        <Modal visible={showEndTimePicker} transparent animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <DateTimePicker
+                value={endDateTime}
+                mode="time"
+                display="spinner"
+                onChange={handleTimeChange}
+                style={{ backgroundColor: '#eff0f6', color: 'white' }}
+              />
+              <TouchableOpacity onPress={confirmEndTime}>
+                <Text style={styles.confirmButton}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
 
       <View style={styles.inputGroup}>
@@ -197,8 +225,7 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
-  
-  
+
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Subject:</Text>
         <TextInput
@@ -208,9 +235,7 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
-    
 
-    
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Description:</Text>
         <TextInput
@@ -222,13 +247,11 @@ const handleCreateGroup = async () => {
           style={styles.input}
         />
       </View>
-        
-     </KeyboardAwareScrollView>
+    </KeyboardAwareScrollView>
 
-      
-      <Button title="Create Group" onPress={handleCreateGroup} />
-    </View>
-  );
+    <Button title="Create Group" onPress={handleCreateGroup} />
+  </View>
+);
 };
 
 const styles = StyleSheet.create({
@@ -250,6 +273,152 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 8,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 16,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    alignItems: 'center',
+  },
+  confirmButton: {
+    marginTop: 16,
+    color: 'blue', // Adjust the color as needed
+  },
 });
 
 export default CreateStudyGroup;
+
+
+
+//   return (
+    
+
+//     <View style={styles.container}>
+      
+//     <KeyboardAwareScrollView>
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Building:</Text>
+//         <SelectList 
+//         setSelected={(val) => setSelected(val)} 
+//         data={locationsObject} 
+//         save="value"
+//         />
+//       </View>
+      
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Room/Location:</Text>
+//         <TextInput
+//           placeholder="Enter Room/Location"
+//           value={location}
+//           onChangeText={(text) => setLocation(text)}
+//           style={styles.input}
+//         />
+//       </View>
+
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Date:</Text>
+//         <TextInput
+//           placeholder="Select Date"
+//           value={date.toLocaleDateString()}
+//           onFocus={() => setShowDatePicker(true)}
+//           style={styles.input}
+//         />
+//         {showDatePicker && (
+      
+//           <DateTimePicker
+//             value={date}
+//             mode="date"
+//             display="default"
+//             onChange={handleDateChange}
+//             style = {{ backgroundColor: '#eff0f6', color:'white'}}
+//           />
+//         )}
+//       </View>
+
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Start Time:</Text>
+//         <TextInput
+//           placeholder="Select start time"
+//           // value={startDateTime.toLocaleTimeString()}
+//           value={startDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+//           onFocus={() => setShowStartTimePicker(true)}
+//           style = {styles.input}
+//         />
+//         {showStartTimePicker && (
+//           <DateTimePicker
+//             value={startDateTime}
+//             mode="time"
+//             display="spinner"
+//             onChange={handleStartTimeChange}
+//             style = {{ backgroundColor: '#eff0f6', color:'white'}}
+//           />
+//         )}
+//       </View>
+
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>End Time:</Text>
+//         <TextInput
+//           placeholder="Select end time"
+//           // value={endDateTime.toLocaleTimeString()} 
+//           value={endDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+//           onFocus={() => setShowEndTimePicker(true)}
+//           style={styles.input}
+//         />
+//         {showEndTimePicker && (
+//           <DateTimePicker
+//             value={endDateTime}
+//             mode="time"
+//             display="spinner"
+//             onChange={handleEndTimeChange}
+//             style = {{ backgroundColor: '#eff0f6', color:'white'}}
+//           />
+//         )}
+//       </View>
+
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Group Size:</Text>
+//         <TextInput
+//           placeholder="Enter group size"
+//           value={groupSize}
+//           onChangeText={(text) => setGroupSize(text)}
+//           keyboardType="numeric"
+//           style={styles.input}
+//         />
+//       </View>
+  
+  
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Subject:</Text>
+//         <TextInput
+//           placeholder="Enter subject"
+//           value={subject}
+//           onChangeText={(text) => setSubject(text)}
+//           style={styles.input}
+//         />
+//       </View>
+    
+
+    
+//       <View style={styles.inputGroup}>
+//         <Text style={styles.label}>Description:</Text>
+//         <TextInput
+//           placeholder="Enter description"
+//           value={description}
+//           onChangeText={(text) => setDescription(text)}
+//           multiline
+//           numberOfLines={4}
+//           style={styles.input}
+//         />
+//       </View>
+        
+//      </KeyboardAwareScrollView>
+
+      
+//       <Button title="Create Group" onPress={handleCreateGroup} />
+//     </View>
+//   );
+// };

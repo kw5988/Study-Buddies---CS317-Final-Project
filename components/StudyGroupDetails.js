@@ -71,7 +71,7 @@ const StudyGroupDetails = ({ route, navigation }) => {
       console.log(studyGroupUsers)
 
       console.log('User joined the study group');
-      navigation.navigate('MainScreen');
+      // navigation.navigate('MainScreen');
     } catch (error) {
       console.error('Error joining study group:', error);
     }

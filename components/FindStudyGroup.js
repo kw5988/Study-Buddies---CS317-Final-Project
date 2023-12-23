@@ -10,8 +10,7 @@ const FindStudyGroup = ({ navigation }) => {
   const allProps = useContext(StateContext);
 
   const firebaseInfo = allProps.firebaseProps;
-  // console.log("*******")
-  // console.log(firebaseInfo.db)
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [results, setResults] = useState([]);
 
@@ -47,13 +46,7 @@ const FindStudyGroup = ({ navigation }) => {
       }
     };
 
-    // if (searchTerm !== '') {
-    //   fetchStudyGroups();
-    // } else {
-    //   // Clear results if the search term is empty
-    //   setResults([]);
-      
-    // }
+ 
     fetchStudyGroups();
   }, [searchTerm]);
 

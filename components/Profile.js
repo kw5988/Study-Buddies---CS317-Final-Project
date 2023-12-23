@@ -26,6 +26,9 @@ const Profile = ({ navigation }) => {
           querySnapshot.forEach((doc) => {
           
             const data = doc.data();
+            console.log("*********")
+            console.log(data)
+            console.log("*********")
             data['docID'] = doc.id
            
             
@@ -42,14 +45,6 @@ const Profile = ({ navigation }) => {
           console.error('Error fetching study groups:', error);
         }
       };
-  
-      // if (searchTerm !== '') {
-      //   fetchStudyGroups();
-      // } else {
-      //   // Clear results if the search term is empty
-      //   setResults([]);
-        
-      // }
       fetchStudyGroups();
     }, [searchTerm]);
   
