@@ -71,7 +71,7 @@ const StudyGroupDetails = ({ route, navigation }) => {
       console.log(studyGroupUsers)
 
       console.log('User joined the study group');
-      // navigation.navigate('MainScreen');
+      navigation.navigate('MainScreen');
     } catch (error) {
       console.error('Error joining study group:', error);
     }
@@ -132,25 +132,28 @@ const StudyGroupDetails = ({ route, navigation }) => {
         console.log(newImageUri);
 
        const url = await uploadToStorage(newImageUri);
-       console.log('hello again');
        const studyGroupRef = doc(firebaseInfo.db, 'studyGroups', docID);
-        console.log('6');
         const studyGroupDoc = await getDoc(studyGroupRef);
         const photos = studyGroupDoc.data().photos || [];
-        
-        console.log('5');
         await updateDoc(studyGroupRef, {
         photos: arrayUnion(url)});
         
         const updatedGroup = photos;
         setStudyGroupPhotos(updatedGroup);
-        navigation.navigate('MainScreen');
+        //navigation.navigate('MainScreen');
+
+        const updatedDoc = await getDoc(studyGroupRef);
+        const updatedPhotos = updatedDoc.data().photos;
+
+    // Updating state with the new photos array
+    setStudyGroupPhotos(updatedPhotos);
 
       
     }}
     catch (error) {
       console.error('Error picking image:', error);
     }
+
   
   };
 

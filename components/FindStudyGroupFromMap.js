@@ -53,7 +53,7 @@ const FindStudyGroupFromMap = ({ route, navigation }) => {
       <FlatList
         style={styles.studyGroupList}
         data={studyGroups}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.docID}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.studyGroupItem}

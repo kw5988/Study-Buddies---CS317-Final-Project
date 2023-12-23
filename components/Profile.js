@@ -53,22 +53,26 @@ const Profile = ({ navigation }) => {
       <View style={styles.container}>
         <Text style={styles.title}>{`Welcome, ${userID}`}</Text>
         <Text style={styles.title}>{"Your Study Groups:"}</Text>
-       
-        <FlatList
-          style={styles.searchResults}
-          data={results}
-          keyExtractor={(item) => item.docID}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.resultItem}
-              onPress={() => navigation.navigate('StudyGroupDetails', { studyGroup: item })}
-            >
-              <Text>{`Subject: ${item.subject}`}</Text>
-              <Text>{`Building: ${item.building}`}</Text>
-              <Text>{`Description: ${item.description}`}</Text>
-            </TouchableOpacity>
-          )}
-        />
+    
+        {results.length > 0 ? (
+          <FlatList
+            style={styles.searchResults}
+            data={results}
+            keyExtractor={(item) => item.docID}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.resultItem}
+                onPress={() => navigation.navigate('StudyGroupDetails', { studyGroup: item })}
+              >
+                <Text>{`Subject: ${item.subject}`}</Text>
+                <Text>{`Building: ${item.building}`}</Text>
+                <Text>{`Description: ${item.description}`}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        ) : (
+          <Text>{"No active groups... Join a study group!"}</Text>
+        )}
       </View>
     );
   };
